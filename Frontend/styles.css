@@ -1,0 +1,11 @@
+@keyframes example {
+    from {background-color: red;}
+    to {background-color: yellow;}
+  }
+
+body {
+    /* background: linear-gradient(90deg, rgba(149,149,149,1) 0%, rgba(46,46,46,1) 100%); */
+    margin: 0 0 0 0;
+    animation-name: example;
+    animation-duration: 4s;
+}
