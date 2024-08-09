@@ -76,6 +76,19 @@ async function getEC2TagValue(id, key) {
     return result
 }
 
+async function getEC2Name(id) {
+    var result = null;
+    var instances = await ec2_region.describeInstances()
+    instances.Reservations.forEach((reservation) => {
+        reservation.Instances.forEach((instance) => {
+            if(instance.InstanceId == id) {
+                result = instance.KeyName
+            }
+        })
+    })
+    return result;
+}
+
 function tagEC2StopAt(id, stopat) {
     tagEC2Instance(id, "StopAt", stopat)
 }
@@ -114,6 +127,11 @@ app.get('/', (req, res) => {
     res.send("AWSMCStart backend API")
     tagEC2DelayedStop(my_test_id, 60)
     startInstanceById(my_test_id)
+})
+
+app.get('/test', async (req, res) => {
+    res.send("AWSMCStart backend API test")
+    console.log(await getEC2Name(my_test_id))
 })
 
 app.listen(port, () => {
