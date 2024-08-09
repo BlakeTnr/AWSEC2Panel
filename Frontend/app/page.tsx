@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ServersPanel from "./components/ServersPanel"
+import Button from "./components/Button";
 
 export default function Home() {
   return (

@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Image from "next/image";
-import Button from "./Button";
+import Button, { buttonTypes } from "./Button";
 
 function ServerSlab() {
   return (
@@ -11,8 +11,8 @@ function ServerSlab() {
         <p className="text-2xl ml-3 inline text-white">Sean Stinks SMP</p>
         <p className="inline ml-2 text-neutral-400 text-sm">Auto stops in 10 minutes</p>
         <div className="ml-auto mr-5">
-            <Button color="red" onClick={() => {console.log("Stopping")}}>Stop</Button>
-            <Button color="green" onClick={() => {console.log("Starting")}}>Start</Button>
+            <Button colorConfig={buttonTypes.stop} onClick={() => {console.log("Stopping")}}>Stop</Button>
+            <Button colorConfig={buttonTypes.start} onClick={() => {console.log("Starting")}}>Start</Button>
         </div>
     </div>
   )
