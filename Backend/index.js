@@ -129,6 +129,23 @@ app.get('/', (req, res) => {
     startInstanceById(my_test_id)
 })
 
+app.get('/all-instances', async (req, res) => {
+    var allInstances = [
+
+    ]
+
+    for(const instance of ec2Instances) {
+        instanceInfo = {}
+
+        instanceInfo.Id = instance
+        instanceInfo.Name = await getEC2Name(instance)
+
+        allInstances.push(instanceInfo)
+    }
+
+    res.send(allInstances)
+})
+
 app.get('/test', async (req, res) => {
     res.send("AWSMCStart backend API test")
     console.log(await getEC2Name(my_test_id))
