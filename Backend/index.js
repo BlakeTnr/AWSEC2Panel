@@ -2,6 +2,7 @@ const { EC2, StartInstancesCommand, EC2Client } = require('@aws-sdk/client-ec2')
 const express = require('express')
 const app = express()
 const port = 3000
+var cron = require('node-cron');
 
 var ec2_region = new EC2({region: 'us-east-1', maxAttempts: 15});
 
@@ -10,6 +11,7 @@ var ec2Instances = [
 ]
 
 function startInstanceById(id) {
+    console.log(`Sending start for ${id}...`)
     const input = { // StartInstancesRequest
         InstanceIds: [ // InstanceIdStringList // required
             id,
@@ -19,6 +21,7 @@ function startInstanceById(id) {
         //if(err) console.log(err, err.stack)
         //else console.log(data)
     })
+    console.log(`Sent start for ${id}!`)
 }
 
 function stopInstanceById(id) {
@@ -62,14 +65,15 @@ function untagEC2Instance(id, key) {
     ec2_region.deleteTags(params)
 }
 
-function getEC2TagValue(id, key) {
-    ec2_region.describeTags().then((tags) => {
-        tags.Tags.forEach((tag) => {
-            if(tag.Key == key) {
-                return tag.Value
-            }
-        })
+async function getEC2TagValue(id, key) {
+    var tags = await ec2_region.describeTags()
+    var result = undefined
+    tags.Tags.forEach((tag) => {
+        if(tag.Key == key) {
+            result = tag.Value
+        }
     })
+    return result
 }
 
 function tagEC2StopAt(id, stopat) {
@@ -80,30 +84,39 @@ function tagEC2DelayedStop(id, secondsDelay) {
     tagEC2StopAt(id, Math.floor(new Date().getTime()/1000)+secondsDelay)
 }
 
-function isEC2PastStopAt(id) {
-    var stopAtUNIX = getEC2TagValue(id, "StopAt")
-    if(new Date().getTime() > stopAtUNIX) {
+async function isEC2PastStopAt(id) {
+    var stopAtUNIX = await getEC2TagValue(id, "StopAt")
+    if(stopAtUNIX != null && Math.floor(new Date().getTime()/1000) > stopAtUNIX) {
         return true
     }
     return false
 }
 
-function checkForPendingStopEC2() {
-    ec2Instances.forEach((ec2Instance) => {
-        if(isEC2PastStopAt(ec2Instance)) {
+async function checkForPendingStopEC2() {
+    ec2Instances.forEach(async (ec2Instance) => {
+        if(await isEC2PastStopAt(ec2Instance)) {
+            console.log(`Stopping ${ec2Instance}...`)
             stopInstanceById(ec2Instance)
             untagEC2Instance(ec2Instance, "StopAt")
+            console.log(`Sent stop for ${ec2Instance}!`)
         }
     })
+}
+
+function startEC2StopDaemon() {
+    cron.schedule('* * * * * *', async () => {
+        await checkForPendingStopEC2()
+    });
 }
 
 const my_test_id = "i-0a87aa86329a56c68" // TODO: Remove this
 app.get('/', (req, res) => {
     res.send("AWSMCStart backend API")
+    tagEC2DelayedStop(my_test_id, 60)
     startInstanceById(my_test_id)
-    tagEC2DelayedStop(my_test_id, 20)
 })
 
 app.listen(port, () => {
     console.log(`AWSMCStart backend API running on port ${port}`)
+    startEC2StopDaemon()
 })
