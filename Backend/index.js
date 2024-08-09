@@ -4,10 +4,10 @@ const app = express()
 const port = 3000
 var cron = require('node-cron');
 
-var ec2_region = new EC2({region: 'us-east-1', maxAttempts: 15});
+var ec2_region = new EC2({region: 'us-east-1', maxAttempts: 15}); // TODO: Turn the region into an environment variable
 
 var ec2Instances = [
-    "i-0a87aa86329a56c68"
+    "i-0a87aa86329a56c68" // TODO: Turn the instances into an environment variable
 ]
 
 function startInstanceById(id) {
