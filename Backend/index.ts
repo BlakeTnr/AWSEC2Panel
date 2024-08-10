@@ -1,14 +1,14 @@
 import { publicProcedure, router } from './trpc';
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
+import { getAllInstancesInfo, tagEC2Instance } from './ec2Utils';
  
 const appRouter = router({
-    userList: publicProcedure
+    ec2Instances: publicProcedure
       .query(async () => {
-        // Retrieve users from a datasource, this is an imaginary database
-        const users = ["test1","test2","test3"]
-        return users
+        return await getAllInstancesInfo()
       }),
-  });
+  },
+  );
 
 const server = createHTTPServer({
 router: appRouter,
