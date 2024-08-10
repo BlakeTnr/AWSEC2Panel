@@ -5,6 +5,7 @@ function ServersPanel() {
   return (
     <div>
         <ServerSlab />
+        <ServerSlab />
     </div>
   )
 }

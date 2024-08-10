@@ -1,6 +1,7 @@
 import Image from "next/image";
 import ServersPanel from "./components/ServersPanel"
 import Button from "./components/Button";
+import Test from "./components/Test";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         </div>
         <div className="flex-auto w-1/8"></div>
       </div>
+      <Test />
     </main>
   );
 }
