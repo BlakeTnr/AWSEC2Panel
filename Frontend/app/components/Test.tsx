@@ -1,6 +1,6 @@
 import React from 'react'
 import { createTRPCClient, httpBatchLink } from '@trpc/client';
-import type { AppRouter } from '../../server';
+import type { AppRouter } from '../../../Backend';
 
 async function Test() {
 
@@ -12,7 +12,7 @@ const trpc = createTRPCClient<AppRouter>({
     ],
 });
 
-    console.log(await trpc.userList.query())
+    console.log(await trpc.ec2Instances.query())
 
   return (
     <div>test</div>
