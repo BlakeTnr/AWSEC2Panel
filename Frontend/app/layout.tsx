@@ -23,3 +23,4 @@ export default function RootLayout({
     </ClientProvider>
   );
 }
+export const fetchCache = 'force-no-store';
