@@ -11,7 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-ec2": "^3.627.0",
+    "@trpc/client": "^11.0.0-rc.477",
+    "@trpc/server": "^11.0.0-rc.477",
     "express": "^4.19.2",
-    "node-cron": "^3.0.3"
+    "node-cron": "^3.0.3",
+    "typescript": "^5.5.4"
   }
 }
