@@ -1,6 +1,6 @@
 import { publicProcedure, router } from './trpc';
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
-import { getAllInstancesInfo, startEC2StopDaemon, startInstanceById, tagEC2DelayedStop, tagEC2Instance } from './ec2Utils';
+import { getAllInstancesInfo, startEC2StopDaemon, startInstanceById, stopInstanceById, tagEC2DelayedStop, tagEC2Instance, untagEC2Instance } from './ec2Utils';
 import cors from 'cors';
 import { z } from 'zod';
  
@@ -16,6 +16,14 @@ const appRouter = router({
 
         await tagEC2DelayedStop(input, 1600)
         return await startInstanceById(input)
+      }),
+    stopEC2Instance: publicProcedure
+      .input(z.string())
+      .mutation(async (opts) => {
+        const { input } = opts;
+
+        await untagEC2Instance(input)
+        return await stopInstanceById(input)
       })
   },
   );
