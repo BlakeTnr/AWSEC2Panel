@@ -40,7 +40,7 @@ export function ClientProvider(props: { children: React.ReactNode }) {
           enabled: () => true,
         }),
         httpBatchLink({
-          url: `${getBaseUrl()}/api/trpc`,
+          url: 'http://localhost:3000',
         }),
       ],
       transformer: superjson,
