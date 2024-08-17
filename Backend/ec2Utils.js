@@ -33,6 +33,28 @@ export function stopInstanceById(id) {
     })
 }
 
+/**
+ * 
+ * @param {*} id 
+ * @returns "pending" | "running" | "shutting-down" | "terminated" | "stopping" | "stopped" | null
+ */
+export async function getEC2State(id) {
+    var params = {
+        IncludeAllInstances: true
+    };
+
+    var result = await ec2_region.describeInstanceStatus(params)
+    
+    var instanceState = null
+    result.InstanceStatuses.forEach((instanceStatus) => {
+        if(instanceStatus.InstanceId == id) {
+            instanceState = instanceStatus.InstanceState.Name
+            return
+        }
+    })
+    return instanceState
+}
+
 export function tagEC2Instance(id, key, value) {
     var params = {
         Resources: [
