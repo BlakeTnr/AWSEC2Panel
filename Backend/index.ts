@@ -1,6 +1,6 @@
 import { publicProcedure, router } from './trpc';
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
-import { getAllInstancesInfo, startEC2StopDaemon, startInstanceById, stopInstanceById, tagEC2DelayedStop, tagEC2Instance, untagEC2Instance } from './ec2Utils';
+import { getAllInstancesInfo, getEC2State, startEC2StopDaemon, startInstanceById, stopInstanceById, tagEC2DelayedStop, tagEC2Instance, untagEC2Instance } from './ec2Utils';
 import cors from 'cors';
 import { z } from 'zod';
  
@@ -27,6 +27,8 @@ const appRouter = router({
       })
   },
   );
+
+startEC2StopDaemon()
 
 const server = createHTTPServer({
 middleware: cors(),
