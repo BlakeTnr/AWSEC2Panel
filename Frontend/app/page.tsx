@@ -14,7 +14,6 @@ export default function Home() {
         </div>
         <div className="flex-auto w-1/8"></div>
       </div>
-      <Test />
     </main>
   );
 }
