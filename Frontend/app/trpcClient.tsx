@@ -6,16 +6,7 @@ import { useState } from "react";
 import superjson from "superjson";
 import type { AppRouter } from "../../Backend";
 
-export const trpc = createTRPCReact<AppRouter>({
-  unstable_overrides: {
-    useMutation: {
-      async onSuccess(opts) {
-        await opts.originalFn();
-        await opts.queryClient.invalidateQueries();
-      },
-    },
-  },
-});
+export const trpc = createTRPCReact<AppRouter>({});
 
 function getBaseUrl() {
   if (typeof window !== "undefined")
@@ -43,7 +34,6 @@ export function ClientProvider(props: { children: React.ReactNode }) {
           url: 'http://localhost:3000',
         }),
       ],
-      transformer: superjson,
     }),
   );
   return (
