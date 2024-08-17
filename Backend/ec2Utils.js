@@ -3,9 +3,7 @@ var cron = require('node-cron');
 
 var ec2_region = new EC2({region: 'us-east-1', maxAttempts: 15}); // TODO: Turn the region into an environment variable
 
-var ec2Instances = [
-    "i-0a87aa86329a56c68" // TODO: Turn the instances into an environment variable
-]
+var ec2Instances = [ process.env.INSTANCES.split(' ') ]
 
 export function startInstanceById(id) {
     console.log(`Sending start for ${id}...`)
@@ -150,7 +148,14 @@ export async function getAllInstancesInfo() {
         var instanceInfo = {}
 
         instanceInfo.Id = instance
+
         instanceInfo.Name = await getEC2Name(instance)
+
+        if(instanceInfo.Name == null) { // This means that the instance id is likely invalid
+            console.log("Instance '" + instance + "' couldn't be found!") // TODO: replace with a better logging library
+            continue
+        }
+
         instanceInfo.StopAt = await getEC2TagValue(instance, "StopAt")
         instanceInfo.State = await getEC2State(instance)
 
