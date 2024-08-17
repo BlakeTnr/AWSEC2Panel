@@ -16,6 +16,7 @@ const appRouter = router({
 
         await tagEC2DelayedStop(input, 1600)
         return await startInstanceById(input)
+        // TODO: Add websockets here for updating frontend on status
       }),
     stopEC2Instance: publicProcedure
       .input(z.string())
@@ -24,6 +25,7 @@ const appRouter = router({
 
         await untagEC2Instance(input)
         return await stopInstanceById(input)
+        // TODO: Add websockets here for updating frontend on status
       })
   },
   );

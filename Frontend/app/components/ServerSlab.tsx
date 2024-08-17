@@ -34,6 +34,7 @@ function ServerSlab(props: any) {
   const startMutation = trpc.startEC2Instance.useMutation()
   const stopMutation = trpc.stopEC2Instance.useMutation()
 
+  // TODO: Make it so time doesn't display "NaN" when it is stopped
   return (
     <div className="flex items-center block py-2 flex-auto mt-5 bg-neutral-800">
         <Image className="inline ml-4" width="50" height="50" src="./aws-ec2.svg" alt="EC2 Logo" />
