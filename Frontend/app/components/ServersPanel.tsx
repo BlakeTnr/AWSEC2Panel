@@ -23,7 +23,7 @@ function ServersPanel() {
       setServers(servers)
     }
     fetchServers()
-  })
+  }, [])
 
   if(servers == null) {
     return (
