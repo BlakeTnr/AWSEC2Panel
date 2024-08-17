@@ -159,5 +159,3 @@ export async function getAllInstancesInfo() {
 
     return allInstances
 }
-
-export const my_test_id = "i-0a87aa86329a56c68" // TODO: Remove this
