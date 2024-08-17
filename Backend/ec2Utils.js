@@ -152,6 +152,7 @@ export async function getAllInstancesInfo() {
         instanceInfo.Id = instance
         instanceInfo.Name = await getEC2Name(instance)
         instanceInfo.StopAt = await getEC2TagValue(instance, "StopAt")
+        instanceInfo.State = await getEC2State(instance)
 
         allInstances.push(instanceInfo)
     }

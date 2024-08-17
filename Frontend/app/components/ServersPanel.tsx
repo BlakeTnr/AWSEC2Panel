@@ -37,7 +37,7 @@ function ServersPanel() {
         {
           servers.map((server: any) => {
             return (
-              <ServerSlab name={server.Name} id={server.Id} stopAt={server.StopAt} key={server.Id} />
+              <ServerSlab name={server.Name} id={server.Id} state={server.State} stopAt={server.StopAt} key={server.Id} />
             )
           })
         }
